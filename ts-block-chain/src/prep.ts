@@ -203,14 +203,86 @@ superPrint([1, 2, true, "3"]); //...error
 //generic is like a placeholder for typescript
 
 type MegaPrint = {
-  <TypePlaceholder>(arr: TypePlaceholder[]): TypePlaceholder;
-};
-
-const megaPrint: MegaPrint = (arr) => {
-  arr.forEach((i) => console.log(i));
+  <T>(arr: T[]): T;
 };
 
 const onePrint: MegaPrint = (arr) => arr[0];
 
 const print_result = onePrint([1, 2, "3", false, null]);
-//typescript is replacing <TypePlaceholder> with the types it finds.
+//typescript is replacing <TypePlaceholder> with the a type it finds.
+
+/** 2-3 Generics Recap */
+type AwesomePrint = {
+  <T, M>(arr: T[], b: M): T;
+};
+
+const twoPrint: AwesomePrint = (arr) => arr[0];
+
+const print_result2 = twoPrint([1, 2, "3", false, null], "나는 M");
+//'제네릭은 선언 시점이 아니라 생성 시점에 타입을 명시하여 하나의 타입만이 아닌 다양한 타입을 사용할 수 있도록 하는 기법이다.'
+
+/**2-4 conclusion */
+function heroPrint<T>(a: T[]) {
+  return a[0];
+}
+
+const printHero = heroPrint([2, 3, 5, "안녕"]);
+
+type Customer<E> = {
+  name: string;
+  extraInfo: E;
+};
+
+const janet: Customer<{ favFood: string }> = {
+  name: "janet",
+  extraInfo: {
+    favFood: "donut",
+  },
+};
+
+type ShawnExtra = {
+  favFood: string;
+};
+
+type ShawnCustomer = Customer<ShawnExtra>;
+
+const shawn: ShawnCustomer = {
+  name: "shawn",
+  extraInfo: {
+    favFood: "sushi",
+  },
+};
+
+function printAllNum(arr: Array<number>) {
+  arr.forEach((i) => console.log(i));
+}
+
+/** 3-0 classes */
+class Employee {
+  constructor(
+    private firstName: string,
+    private lastName: string,
+    public nickname: string
+  ) {}
+}
+
+const brian = new Employee("brian", "smith", "브로");
+brian.firstname; // error.... because it's private
+brian.nickname; // works fine
+
+//abstract class is a class that other classes can inherit from. can't be used solely
+abstract class Developer {
+  constructor(
+    private firstName: string, //private properties can't be accessed
+    private lastName: string,
+    protected nickname: string //prtected properties can't be accessed from outside the class
+  ) {}
+  abstract getNickName(): void;
+  private getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+class member extends Developer {}
+const jacob = new member("jacob", "braket", "제이키");
+jacob.getFullName();
