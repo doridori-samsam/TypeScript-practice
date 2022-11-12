@@ -277,12 +277,115 @@ abstract class Developer {
     private lastName: string,
     protected nickname: string //prtected properties can't be accessed from outside the class
   ) {}
-  abstract getNickName(): void;
+  abstract getNickName(): void; //abstract method
   private getFullName() {
     return `${this.firstName} ${this.lastName}`;
   }
 }
 
-class member extends Developer {}
+class member extends Developer {
+  getNickName() {
+    console.log(this.nickname) //abstract method is specified here
+  }
+}
 const jacob = new member("jacob", "braket", "제이키");
-jacob.getFullName();
+jacob.getFullName(); //...error
+
+
+/** 3-1 recap */
+
+//hashmap dictionary
+
+type Words = {
+  [key:string]: string //key can be anything as long as it's a string type and a have string type property
+}
+
+let dict: Words = {
+  "lasagna": "food"
+  false : "what?" //doesn't meet the condition.
+}
+
+
+class Dict {
+  private words:Words
+  constructor() {
+    this.words = {}
+  }
+  add(word: Word) { //class also can be used as a type(when you want the parameter to be an instance)
+    if (this.words[word.term] === undefined) {
+      this.words[word.term] = word.definition;
+    }
+  }
+  def(term:string) {
+    return this.words[term]
+  }
+  //add methods that can delete or modify a word.
+
+  static hello() {
+    //static doesn't belong to typescript. it belongs to javascript.
+  }
+}
+
+class Word{
+  constructor(
+    public term: string,
+    public readonly definition: string 
+  ) { }
+  //add methods that add or modify a definition of a word
+}
+
+const kimchi = new Word("kimchi", "한국의 음식");
+const dic = new Dict();
+dic.add(kimchi)
+dic.def("kimchi") //print "한국의 음식"
+kimchi.def = "미국음식" //readonly property can't be modified.
+
+
+/** 3-2 interface */
+
+type Team = "Bandle city" | "Demacia" | "NOXUS"; //can also limit the value 
+type Health = 1 | 5 | 10;
+
+type Champion = {
+  nickname: string,
+  team: Team
+  health: Health
+}
+
+const timo: Champion = {
+  nickname: "timochung",
+  team: "Bandle city",
+  health: 1
+}
+
+//use Interface
+
+interface Champ {
+  nickname: string,
+  team: Team
+  health: Health
+}
+
+const garren: Champ = {
+  nickname: "dogren",
+  team: "Demacia",
+  health:10
+}
+
+//interface only can be used when specifying the shape of an object.
+//interface whatever = string;  => wrong...
+
+
+interface User {
+  name : string
+}
+
+interface me extends User {
+  readonly age: number
+}
+
+const sam: me = {
+  name: "sam",
+  age: 29
+}
+
