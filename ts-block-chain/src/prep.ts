@@ -1,5 +1,7 @@
 /** 1-1 implicit Types Vs. Explicit Types */
 
+import { StringMappingType } from "typescript";
+
 let a = "hello";
 //a = 1 ; not assignable because a is already delcared as string...
 let b: boolean = false; //it's better let typescript infer the type.
@@ -389,3 +391,24 @@ const sam: me = {
   age: 29
 }
 
+
+/** 3-3 interface2 */
+abstract class Dev {
+  constructor(
+    protected firstName: string,
+    protected lastName: string
+  ) { }
+  abstract sayHi(name: string): string
+  abstract fullName():string
+}
+
+//new User() //error. can't create instances from abstract class...
+
+class Worker extends Dev {
+  fullName(): string {
+    return `${this.firstName} ${this.lastName}`
+  }
+  sayHi(name: string): string {
+    return `Hello ${name}. My name is ${this.fullName()}`
+  }
+}
