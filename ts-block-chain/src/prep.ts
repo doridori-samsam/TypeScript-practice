@@ -402,7 +402,7 @@ abstract class Dev {
   abstract fullName():string
 }
 
-//new User() //error. can't create instances from abstract class...
+new User() //error. can't create instances from abstract class...
 
 class Worker extends Dev {
   fullName(): string {
@@ -412,3 +412,107 @@ class Worker extends Dev {
     return `Hello ${name}. My name is ${this.fullName()}`
   }
 }
+
+//when compiling, interface doesn't appear on JS code.
+
+//change abstract class to interface
+
+interface User {
+  firstName: string,
+  lastName: string,
+  sayHi(name: string): string,
+  fullName():string
+}
+
+interface Human {
+  health:number
+}
+class Geek implements User, Human{
+  constructor(
+    public firstName: string,
+    public lastName: string,
+    public health:number
+  ) {}
+    sayHi:(name:string)=>console.log(name)
+}
+
+function makeUser(user: User) {
+  return "hi"
+}
+
+
+/** 3-4 interface recap */
+//interface can be duplicated. type can't
+
+type PlayerA = {
+  name: string
+}
+
+type PlayerAA = PlayerA & {
+  health: number
+}
+
+const playerA: PlayerAA = {
+  name: "nico",
+  health: 4
+}
+
+interface PlayerB {
+  name : string
+}
+interface PlayerB {
+  health: number
+}
+
+const playerB: PlayerB = {
+  name: "nico",
+  health: 10
+}
+
+
+type PlayerC = {
+  firstName : string
+}
+
+interface PlayerD  {
+  firstName: string
+  test?:number
+}
+
+class MVP implements PlayerD {
+  constructor(
+    public firstName: string
+  ) { }
+}
+
+//if you want to define shape of classes or objects, you're encouraged to use interface..
+
+
+/** 3-5 polymorphism */
+interface SStorage<T>{
+  [key:string] : T
+}
+
+class LocalStorage<T>{
+  private storage: SStorage<T> = {}
+  set(key: string, value: T) {
+    this.storage[key] = value;
+  }
+  remove(key: string) {
+    delete this.storage[key]
+   }
+  get(key: string): T { 
+    return this.storage[key]
+  }
+  clear() {
+    this.storage = {};
+  }
+}
+
+const stringsStorage = new LocalStorage<string>()
+stringsStorage.get("key") //returns string type
+stringsStorage.set("hi", "there")
+
+const booleansStorage = new LocalStorage<boolean>();
+booleansStorage.get("xx") //returns boolean type
+booleansStorage.set("ciao", false)
