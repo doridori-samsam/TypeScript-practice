@@ -1,9 +1,5 @@
 "use strict";
-class Block {
-    constructor(data) {
-        this.data = data;
-    }
-    static hello() {
-        return "hi";
-    }
-}
+// import { init, exit } from "./myPackage";
+// init(false, "hey")
+// exit(1)
+console.log("hi");

@@ -516,3 +516,9 @@ stringsStorage.set("hi", "there")
 const booleansStorage = new LocalStorage<boolean>();
 booleansStorage.get("xx") //returns boolean type
 booleansStorage.set("ciao", false)
+
+
+import { init, exit } from "./myPackage";
+
+init(false, "hi")
+exit(1)
