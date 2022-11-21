@@ -275,3 +275,6 @@ stringsStorage.set("hi", "there");
 const booleansStorage = new LocalStorage();
 booleansStorage.get("xx"); //returns boolean type
 booleansStorage.set("ciao", false);
+const myPackage_1 = require("./myPackage");
+(0, myPackage_1.init)(false, "hi");
+(0, myPackage_1.exit)(1);

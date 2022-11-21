@@ -1,13 +1,14 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
+import { off } from "process";
 
-interface BlockShape{
+interface BlockShape {
   hash: string;
   prevHash: string;
   height: number;
   data: string;
 }
 
-class Block implements BlockShape{
+class Block implements BlockShape {
   public hash: string;
   constructor(
     public prevHash: string,
@@ -17,6 +18,39 @@ class Block implements BlockShape{
     this.hash = Block.calculateHash(prevHash, height, data);
   }
   static calculateHash(prevHash: string, height: number, data: string) {
-    const toHash = `${prevHash}${height}${data}`
-   }
+    const toHash = `${prevHash}${height}${data}`;
+    return crypto.createHash("sha256").update(toHash).digest("hex");
+  }
+  //static is a method that can be called without an instance
+  // const p = new Player()
+  // p.kickball()
 }
+
+class Blockchain {
+  private blocks: Block[];
+  constructor() {
+    this.blocks = [];
+  }
+  private getPrevHash() {
+    if (this.blocks.length === 0) return "";
+    return this.blocks[this.blocks.length - 1].hash;
+  }
+  public addBlock(data: string) {
+    const newBlock = new Block(
+      this.getPrevHash(),
+      this.blocks.length + 1,
+      data
+    );
+    this.blocks.push(newBlock);
+  }
+  public getBlocks() {
+    return this.blocks;
+  }
+}
+
+const blockchain = new Blockchain();
+blockchain.addBlock("1st one");
+blockchain.addBlock("2nd one");
+blockchain.addBlock("3rd one");
+
+console.log(blockchain.getBlocks());
